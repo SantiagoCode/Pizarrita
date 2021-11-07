@@ -24,35 +24,67 @@ var yinicial = 150;
 var xfinal = 150;
 var yfinal = 150;
 
-document.addEventListener("keyup", dibujar);
+document.addEventListener("keydown", calcular);
 
-function dibujar(evento)
+function calcular(evento)
 {
   switch (evento.keyCode)
   {
     case teclas.LEFT:
       // Left resta en el eje X
       xfinal = xfinal - pixels;
-      dibujante(color, xinicial, yinicial, xfinal, yfinal);
-      xinicial = xfinal;
     break;
     case teclas.UP:
       // Up resta en el eje Y
       yfinal = yfinal - pixels;
-      dibujante(color, xinicial, yinicial, xfinal, yfinal);
-      yinicial = yfinal;
     break;
     case teclas.RIGHT:
       // Right suma en el eje X
       xfinal = xfinal + pixels;
-      dibujante(color, xinicial, yinicial, xfinal, yfinal);
-      xinicial = xfinal;
     break;
     case teclas.DOWN:
       // Down suma en el eje Y
       yfinal = yfinal + pixels;
-      dibujante(color, xinicial, yinicial, xfinal, yfinal);
-      yinicial = yfinal;
     break;
   }
+
+  dibujante(color, xinicial, yinicial, xfinal, yfinal);
+  xinicial = xfinal;
+  yinicial = yfinal;
+}
+
+// PRUEBA CON EL MOUSE
+d.addEventListener("mousedown", ahoraSi);
+d.addEventListener("mouseup", ahoraNo);
+
+function ahoraSi(evento)
+{
+  var mousePresionadoX = evento.clientX;
+  var mousePresionadoY = evento.clientY;
+
+  var marginLeft = d.offsetLeft;
+  var marginTop = d.offsetTop;
+
+  realLeft = mousePresionadoX - marginLeft;
+  realTop = mousePresionadoY - marginTop;
+}
+
+function ahoraNo(evento)
+{
+  var mouseNoPresionadoX = evento.clientX;
+  var mouseNoPresionadoY = evento.clientY;
+
+  var marginLeftB = d.offsetLeft;
+  var marginTopB = d.offsetTop;
+
+  realLeftB = mouseNoPresionadoX - marginLeftB;
+  realTopB = mouseNoPresionadoY - marginTopB;
+
+  dibujante(color, realLeft, realTop, realLeftB, realTopB);
+  xinicial = realLeftB;
+  yinicial = realTopB;
+
+  xfinal = xinicial;
+  yfinal = yinicial;
+
 }
