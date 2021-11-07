@@ -81,10 +81,12 @@ function ahoraNo(evento)
   realTopB = mouseNoPresionadoY - marginTopB;
 
   dibujante(color, realLeft, realTop, realLeftB, realTopB);
+
+  // Hacemos que el ultimo ´punto de dibujo sea el primero
   xinicial = realLeftB;
   yinicial = realTopB;
 
+  // Reiniciamos el trazo
   xfinal = xinicial;
   yfinal = yinicial;
-
 }
