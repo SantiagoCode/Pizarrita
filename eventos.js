@@ -1,15 +1,24 @@
 var d = document.getElementById("area_de_dibujo");
 var lienzo = d.getContext("2d");
+var color = "blue";
+
+d.addEventListener("mousedown", activarPluma);
+d.addEventListener("mouseup", desactivarPluma);
 
 function dibujante(color, xinicial, yinicial, xfinal, yfinal)
 {
   lienzo.beginPath();
+  lienzo.lineWidth = 10;
   lienzo.strokeStyle = color;
   lienzo.moveTo(xinicial, yinicial);
   lienzo.lineTo(xfinal, yfinal);
   lienzo.stroke();
+  lienzo.lineCap = "round";
   lienzo.closePath();
 }
+
+
+
 
 var teclas = {
   LEFT: 37,
@@ -18,7 +27,7 @@ var teclas = {
   DOWN: 40
 };
 var pixels = 5;
-var color = "blue";
+var colorFlechas = "red";
 var xinicial = 150;
 var yinicial = 150;
 var xfinal = 150;
@@ -48,45 +57,53 @@ function calcular(evento)
     break;
   }
 
-  dibujante(color, xinicial, yinicial, xfinal, yfinal);
+  dibujante(colorFlechas, xinicial, yinicial, xfinal, yfinal);
   xinicial = xfinal;
   yinicial = yfinal;
 }
 
-// PRUEBA CON EL MOUSE
-d.addEventListener("mousedown", ahoraSi);
-d.addEventListener("mouseup", ahoraNo);
 
-function ahoraSi(evento)
+
+
+
+
+function activarPluma(event)
 {
-  var mousePresionadoX = evento.clientX;
-  var mousePresionadoY = evento.clientY;
-
+  d.addEventListener("mousemove", trazar);
+  // verificando donde se hizo el click respecto al documento
+  var mousePresionadoX = event.clientX;
+  var mousePresionadoY = event.clientY;
+  // verificando donde esta el elemento clickado en referencia al documento
   var marginLeft = d.offsetLeft;
   var marginTop = d.offsetTop;
-
-  realLeft = mousePresionadoX - marginLeft;
-  realTop = mousePresionadoY - marginTop;
+  // Establecer las coordenadas que se usaran en la funcion que dibujara la linea
+  xPuntoA = mousePresionadoX - marginLeft;
+  yPuntoA = mousePresionadoY - marginTop;
 }
 
-function ahoraNo(evento)
+function trazar(event)
 {
-  var mouseNoPresionadoX = evento.clientX;
-  var mouseNoPresionadoY = evento.clientY;
+  // verificando donde se hizo el click respecto al documento
+  var mousePresionadoX = event.clientX;
+  var mousePresionadoY = event.clientY;
+  // verificando donde esta el elemento clickado en referencia al documento
+  var marginLeft = d.offsetLeft;
+  var marginTop = d.offsetTop;
+  // Establecer las coordenadas que se usaran en la funcion que dibujara la linea
+  xPuntoB = mousePresionadoX - marginLeft;
+  yPuntoB = mousePresionadoY - marginTop;
 
-  var marginLeftB = d.offsetLeft;
-  var marginTopB = d.offsetTop;
+  // xPuntoB = xPuntoA;
+  // yPuntoB = yPuntoA;
 
-  realLeftB = mouseNoPresionadoX - marginLeftB;
-  realTopB = mouseNoPresionadoY - marginTopB;
+  dibujante(color, --xPuntoA, --yPuntoA, ++xPuntoB, ++yPuntoB);
+  dibujante(color, --xPuntoA, ++yPuntoA, ++xPuntoB, --yPuntoB);
 
-  dibujante(color, realLeft, realTop, realLeftB, realTopB);
+  xPuntoA = xPuntoB
+  yPuntoA = yPuntoB
+}
 
-  // Hacemos que el ultimo ´punto de dibujo sea el primero
-  xinicial = realLeftB;
-  yinicial = realTopB;
-
-  // Reiniciamos el trazo
-  xfinal = xinicial;
-  yfinal = yinicial;
+function desactivarPluma(event)
+{
+  d.removeEventListener("mousemove", trazar);
 }
