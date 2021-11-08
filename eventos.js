@@ -18,8 +18,7 @@ function dibujante(color, xinicial, yinicial, xfinal, yfinal)
 }
 
 
-
-
+// A PARTIR DE ACA ES PINTAR CON LAS TECLAS
 var teclas = {
   LEFT: 37,
   UP: 38,
@@ -63,10 +62,7 @@ function calcular(evento)
 }
 
 
-
-
-
-
+// A PARTIR DE ACA ES PINTAR CON EL MOUSE
 function activarPluma(event)
 {
   d.addEventListener("mousemove", trazar);
